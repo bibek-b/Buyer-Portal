@@ -1,7 +1,10 @@
 import express from 'express';
 import { env } from './config/env.js';
+import authRoute from './routes/authRoute.js'
 
 const app = express();
+
+app.use('/api/auth', authRoute)
 
 const port = env.PORT || 5100;
 
