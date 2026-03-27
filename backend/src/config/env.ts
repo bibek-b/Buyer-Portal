@@ -3,5 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const env = {
-    PORT:process.env.RUNNING_PORT
+    PORT:process.env.RUNNING_PORT,
+    JWT_SECRET: process.env.JWT_SECRET
 }
