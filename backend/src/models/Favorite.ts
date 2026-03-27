@@ -12,4 +12,6 @@ const favoriteSchema = new Schema({
         ref: 'Property',
         required: true
     },
-})
+});
+
+export default mongoose.model("Favorite", favoriteSchema);
