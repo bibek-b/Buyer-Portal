@@ -1,8 +1,16 @@
 import { Link, Navigate, useParams } from "react-router";
 import authPageImg from "../assets/authPageImg.jpg";
 import { authFields } from "../constants/authConstant";
+import { useState } from "react";
+import type { fieldsType, formDataType } from "../types/authType";
 
 const Auth = () => {
+  const [formData, setFormData] = useState<formDataType>({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const { mode } = useParams();
 
   const validModes = ["login", "register"];
@@ -12,11 +20,14 @@ const Auth = () => {
   }
 
   const isLogin = mode === "login";
-  const fields = authFields[mode as "login" | "register"] || [];
-  
+  const fields: fieldsType[] = authFields[mode as "login" | "register"] || [];
+
+  const handleSubmit = () => {};
+
+  console.log({ formData });
 
   return (
-    <div className="bg-background  min-h-screen  flex items-center justify-center gap-10">
+    <div className="bg-background  min-h-screen  flex items-center justify-center">
       <div className="w-[50%] flex items-center justify-center">
         <img
           src={authPageImg}
@@ -36,22 +47,54 @@ const Auth = () => {
           {fields.map((field) => (
             <div key={field.id} className="flex flex-col gap-2 ">
               <label className="text-black/80">{field.label}</label>
-              <input
-                type={field.inputType || "text"}
-                className="border border-black/20 w-100 outline-0 py-2 px-4 rounded-full focus:border-black/50 transition-colors duration-300"
-                placeholder={field.placeholder}
-              />
+              {field.inputType === "password" ? (
+                <input
+                  type={field.inputType}
+                  className="border border-black/20 w-100 outline-0 py-2 px-4 rounded-full focus:border-black/50 transition-colors duration-300"
+                  placeholder={field.placeholder}
+                  required
+                  minLength={6}
+                  value={formData[field.accessor as keyof formDataType]}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      [field.accessor]: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <input
+                  type={field.inputType || "text"}
+                  className="border border-black/20 w-100 outline-0 py-2 px-4 rounded-full focus:border-black/50 transition-colors duration-300"
+                  placeholder={field.placeholder}
+                  required
+                  value={formData[field.accessor as keyof formDataType]}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      [field.accessor]: e.target.value,
+                    })
+                  }
+                />
+              )}
             </div>
           ))}
         </div>
 
-        <button className="bg-blue-600 w-100 text-white p-2 rounded-full hover:bg-blue-700 cursor-pointer transition-colors duration-300">
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="bg-blue-600 w-100 text-white p-2 rounded-full hover:bg-blue-700 cursor-pointer transition-colors duration-300"
+        >
           {isLogin ? "Login" : "Register"}
         </button>
 
         <span>
           {isLogin ? "Don't" : "Already"} have an account?{" "}
-          <Link to={`/auth/${isLogin ? "/register" : "/login"}`} className="text-blue-700 hover:underline">
+          <Link
+            to={`/auth/${isLogin ? "/register" : "/login"}`}
+            className="text-blue-700 hover:underline"
+          >
             {isLogin ? "Register" : "Login"}
           </Link>
         </span>
