@@ -84,7 +84,6 @@ export const login = async (req: Request, res: Response) => {
         success: true,
         message: "Login successful",
         data: safeUser,
-        accessToken,
       });
   } catch (error) {
     return res
