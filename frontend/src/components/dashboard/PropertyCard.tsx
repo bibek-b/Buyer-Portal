@@ -7,11 +7,7 @@ import { useFavoriteStore } from "../../stores/favoritesStore";
 import type { favoriteType } from "../../types/favoriteType";
 
 const PropertyCard = () => {
-  const { addToFavorite, favorites, removeFromFavorite, setFavorites } =
-    useFavoriteStore();
-  useEffect(() => {
-    setFavorites(JSON.parse(localStorage.getItem("favorites")!));
-  }, []);
+  const { addToFavorite, favorites, removeFromFavorite } = useFavoriteStore();
 
   const handleSelectFavorite = (id: string) => {
     if (favorites.some((fav: favoriteType) => fav.id == id)) {
