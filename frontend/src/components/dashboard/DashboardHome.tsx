@@ -30,12 +30,12 @@ const DashboardHome = () => {
   const { user } = useUserStore();
 
   return (
-    <div className="py-4 space-y-20">
+    <div className="py-4 space-y-30">
       <h2 className="text-4xl font-bold capitalize">
         👋Welcome, {user.name} ({user.role})
       </h2>
 
-      <span className=" absolute left-1/2 top-25 text-lg">
+      <span className=" absolute left-1/2 top-30 text-lg">
         List of available properties 🏘
       </span>
 
