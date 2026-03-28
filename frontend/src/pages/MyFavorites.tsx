@@ -5,19 +5,25 @@ import { usePropertyStore } from "../stores/propertyStore";
 import { toast } from "react-toastify";
 import { favoriteApi } from "../api/favoriteApi";
 import type { AxiosError } from "axios";
+import { useLoaderStore } from "../stores/loaderStore";
 
 const MyFavorites = () => {
   const { favorites, setFavorites } = useFavoriteStore();
   const { properties } = usePropertyStore();
+    const { showLoading, hideLoading } = useLoaderStore();
+  
 
   useEffect(() => {
     const getMyFavorites = async () => {
       try {
+        showLoading();
         const res = await favoriteApi.getMyFavorites();
         setFavorites(res.data.data);
       } catch (error) {
         const err = error as AxiosError<{ message: string }>;
         toast.error(err.response?.data?.message || "Something went wrong");
+      } finally {
+        hideLoading();
       }
     };
     getMyFavorites();

@@ -8,14 +8,18 @@ import { useUserStore } from "../../stores/userStore";
 import { toast } from "react-toastify";
 import { favoriteApi } from "../../api/favoriteApi";
 import type { AxiosError } from "axios";
+import { useLoaderStore } from "../../stores/loaderStore";
 
 const PropertyCard = ({ data }: { data: PropertyType[] }) => {
   const { addToFavorite, favorites, removeFromFavorite } = useFavoriteStore();
   const { user } = useUserStore();
+    const { showLoading, hideLoading } = useLoaderStore();
+  
 
   const handleSelectFavorite = async (id: string) => {
     let res;
     try {
+      showLoading();
       if (favorites.some((fav: FavoriteType) => fav.propertyId === id)) {
         removeFromFavorite(id);
         res = await favoriteApi.removeFromFavorites(id);
@@ -27,6 +31,8 @@ const PropertyCard = ({ data }: { data: PropertyType[] }) => {
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data?.message || "Something went wrong");
+    } finally {
+      hideLoading();
     }
   };
 

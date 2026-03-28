@@ -13,6 +13,7 @@ import { authApi } from "../api/authApi";
 import { navigate } from "../utils/navigate";
 import { useUserStore } from "../stores/userStore";
 import type { AxiosError } from "axios";
+import { useLoaderStore } from "../stores/loaderStore";
 
 const Auth = () => {
   const [formData, setFormData] = useState<AuthFormDataType>({
@@ -24,6 +25,7 @@ const Auth = () => {
   const { mode } = useParams();
   const { nav } = navigate();
   const { setUser } = useUserStore();
+  const { showLoading, hideLoading }= useLoaderStore();
 
   const validModes = ["login", "register"];
 
@@ -46,6 +48,7 @@ const Auth = () => {
 
     let res;
     try {
+      showLoading();
       if (isLogin) {
         res = await authApi.login(formData);
       } else if (mode === "register") {
@@ -57,6 +60,8 @@ const Auth = () => {
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data?.message || "Something went wrong");
+    } finally {
+      hideLoading();
     }
   };
 

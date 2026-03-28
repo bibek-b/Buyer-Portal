@@ -5,18 +5,23 @@ import PropertyCard from "./PropertyCard";
 import { toast } from "react-toastify";
 import { propertyApi } from "../../api/propertyApi";
 import type { AxiosError } from "axios";
+import { useLoaderStore } from "../../stores/loaderStore";
 
 const DashboardHome = () => {
   const { properties, setProperties } = usePropertyStore();
+  const { showLoading, hideLoading } = useLoaderStore();
 
   useEffect(() => {
     const fetchAllProperties = async () => {
       try {
+        showLoading();
         const res = await propertyApi.getAllProperties();
         setProperties(res.data.data);
       } catch (error) {
         const err = error as AxiosError<{ message: string }>;
         toast.error(err.response?.data?.message || "Something went wrong");
+      } finally {
+        hideLoading();
       }
     };
     fetchAllProperties();
