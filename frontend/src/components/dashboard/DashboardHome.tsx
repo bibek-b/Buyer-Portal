@@ -27,7 +27,7 @@ const DashboardHome = () => {
   return (
     <div className="py-4 space-y-20">
       <h2 className="text-4xl font-bold capitalize">
-        Welcome 👋, {user.name} ({user.role})
+        👋Welcome, {user.name} ({user.role})
       </h2>
 
       <span className=" absolute left-1/2 top-25 text-lg">
