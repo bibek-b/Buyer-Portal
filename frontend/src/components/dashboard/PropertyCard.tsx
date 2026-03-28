@@ -7,6 +7,7 @@ import type { PropertyType } from "../../types/propertyType";
 import { useUserStore } from "../../stores/userStore";
 import { toast } from "react-toastify";
 import { favoriteApi } from "../../api/favoriteApi";
+import type { AxiosError } from "axios";
 
 const PropertyCard = ({ data }: { data: PropertyType[] }) => {
   const { addToFavorite, favorites, removeFromFavorite } = useFavoriteStore();
@@ -14,16 +15,19 @@ const PropertyCard = ({ data }: { data: PropertyType[] }) => {
 
   const handleSelectFavorite = async (id: string) => {
     let res;
-   try {
-     if (favorites.some((fav: FavoriteType) => fav.id == id)) {
-       removeFromFavorite(id);
-      //  res = await favoriteApi.removeFromFavorites()
-     } else {
-       addToFavorite({ id, userId: user._id });
-     }
-   } catch (error) {
-    toast.error(error.message);
-   }
+    try {
+      if (favorites.some((fav: FavoriteType) => fav.propertyId === id)) {
+        removeFromFavorite(id);
+        res = await favoriteApi.removeFromFavorites(id);
+      } else {
+        addToFavorite({ propertyId: id, userId: user._id });
+        res = await favoriteApi.addToFavorites(id);
+      }
+      toast.success(res.data.message);
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      toast.error(err.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
@@ -31,13 +35,15 @@ const PropertyCard = ({ data }: { data: PropertyType[] }) => {
       {data.length > 0 ? (
         data?.map((p) => (
           <div
-            key={p.id}
+            key={p._id}
             className="w-72 min-h-80 shadow-xl shadow-indigo-500 flex flex-col  p-2 rounded-2xl gap-4 hover:scale-[1.05] transition-discrete duration-300"
           >
             <div className="relative w-full">
               <img src={img} className="w-full h-40 object-cover rounded-2xl" />
-              <div onClick={() => handleSelectFavorite(p.id)}>
-                {favorites.some((fav: FavoriteType) => fav.id == p.id) ? (
+              <div onClick={() => handleSelectFavorite(p._id)}>
+                {favorites.some(
+                  (fav: FavoriteType) => fav.propertyId == p._id,
+                ) ? (
                   <FaHeart
                     size={22}
                     className="absolute top-2  right-4 text-blue-500 cursor-pointer hover:scale-[1.2] transition-discrete duration-300 ease-in-out"
