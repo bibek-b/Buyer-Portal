@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 
-export const navigate = () => {
-  const nav = useNavigate();
-  return { nav };
+export const navigator = () => {
+  const navigate = useNavigate();
+  return { navigate };
 };

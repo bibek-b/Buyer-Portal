@@ -10,7 +10,7 @@ import type {
 import { authFieldValidator } from "../validations/authFieldValidator";
 import { toast } from "react-toastify";
 import { authApi } from "../api/authApi";
-import { navigate } from "../utils/navigate";
+import { navigator } from "../utils/navigate";
 import { useUserStore } from "../stores/userStore";
 import type { AxiosError } from "axios";
 import { useLoaderStore } from "../stores/loaderStore";
@@ -23,7 +23,7 @@ const Auth = () => {
     confirmPassword: "",
   });
   const { mode } = useParams();
-  const { nav } = navigate();
+  const { navigate } = navigator();
   const { setUser } = useUserStore();
   const { showLoading, hideLoading }= useLoaderStore();
 
@@ -56,7 +56,7 @@ const Auth = () => {
       }
       setUser(res?.data.data);
       toast.success(res?.data.message);
-      nav("/");
+      navigate("/");
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data?.message || "Something went wrong");

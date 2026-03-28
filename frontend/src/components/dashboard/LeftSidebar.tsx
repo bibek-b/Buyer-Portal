@@ -1,9 +1,10 @@
 import { Link, useLocation } from "react-router"
 import { leftSidebarOptions } from "../../constants/dashboardConstant"
+import { navigator } from "../../utils/navigate";
 
 const LeftSidebar = () => {
   const currentUrlPath = useLocation().pathname;
-  console.log(currentUrlPath)
+  const { navigate } = navigator();
   return (
     <div className='bg-blue-500 w-[14%]  h-screen space-y-20 text-white  py-8 fixed'>
        <div className="px-2 h-full flex flex-col text-center justify-between">
@@ -20,6 +21,7 @@ const LeftSidebar = () => {
          </div>
 
         <button
+        onClick={() => navigate('/auth/login')}
         className="bg-red-500 w-full  py-1 rounded-full px-6 cursor-pointer hover:bg-red-600 transition-colors duration-300">Logout</button>
        </div>
     </div>
