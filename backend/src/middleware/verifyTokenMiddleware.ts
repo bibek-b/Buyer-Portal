@@ -3,7 +3,6 @@ import jwt, { type JwtPayload } from 'jsonwebtoken';
 import { env } from "../config/env.js";
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-console.log(req.cookies)
     const token = req.cookies.accessToken;
 
     if(!token) {

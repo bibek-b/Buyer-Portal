@@ -1,9 +1,12 @@
-import type { Request, Response } from "express";
+import type {  Response } from "express";
 import Favorite from "../models/Favorite.js";
 import Property from "../models/Property.js";
 import User from "../models/User.js";
+import type { AuthRequest } from "../types/axios.js";
 
-export const getAllFavorites = async (req: Request, res: Response) => {
+
+
+export const getAllFavorites = async (req: AuthRequest, res: Response) => {
   try {
     const favorites = await Favorite.find();
     return res.status(200).json({
@@ -18,7 +21,7 @@ export const getAllFavorites = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserFavorites = async (req: Request, res: Response) => {
+export const getUserFavorites = async (req: AuthRequest, res: Response) => {
   const userId = req.user.id;
   try {
     const isUserExists = await User.findById(userId);
@@ -29,7 +32,7 @@ export const getUserFavorites = async (req: Request, res: Response) => {
         .json({ success: false, message: "User doesnot exists!" });
     }
 
-    const favorites = await Favorite.find({ user: userId });
+    const favorites = await Favorite.find({ userId });
     return res.status(200).json({
       success: true,
       message: "User favorites fetched successfully!",
@@ -42,7 +45,7 @@ export const getUserFavorites = async (req: Request, res: Response) => {
   }
 };
 
-export const addFavorite = async (req: Request, res: Response) => {
+export const addFavorite = async (req: AuthRequest, res: Response) => {
   const userId = req.user.id;
   const { propertyId } = req.params;
   try {
@@ -62,7 +65,8 @@ export const addFavorite = async (req: Request, res: Response) => {
         .json({ success: false, message: "User doesnot exists!" });
     }
 
-    await Favorite.create({ property: propertyId, user: userId });
+    await Favorite.create({ propertyId, userId });
+    return res.status(201).json({success:false, message: "Property successfully added to favorites!"});
   } catch (error) {
     return res
       .status(500)
@@ -70,7 +74,7 @@ export const addFavorite = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteFavorite = async (req: Request, res: Response) => {
+export const deleteFavorite = async (req: AuthRequest, res: Response) => {
   const userId = req.user.id;
   const { propertyId } = req.params;
   try {
@@ -81,7 +85,7 @@ export const deleteFavorite = async (req: Request, res: Response) => {
         .status(404)
         .json({ success: false, message: "Property doesnot exists!" });
     }
-    await Favorite.deleteOne({ user: userId, property: propertyId });
+    await Favorite.deleteOne({ userId, propertyId });
   } catch (error) {
     return res
       .status(500)
