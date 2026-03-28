@@ -1,4 +1,4 @@
-export interface FieldsType {
+export interface AuthFieldsAttributeType {
   id: number;
   label: string;
   placeholder: string;
@@ -6,7 +6,7 @@ export interface FieldsType {
   inputType?: string;
 }
 
-export interface FormDataType {
+export interface AuthFormDataType {
   name?: string;
   email: string;
   password: string;
