@@ -4,10 +4,14 @@ import authRoute from './routes/authRoute.js';
 import favoriteRoute from './routes/favoriteRoute.js';
 import cookieParser from 'cookie-parser';
 import { connectDb } from './config/db.js';
+import cors from 'cors';
 
 const app = express();
 
 connectDb();
+app.use(cors({
+    origin: env.FRONTEND_URL
+}))
 app.use(cookieParser());
 app.use(express.json());
 
