@@ -2,6 +2,7 @@ import express from 'express';
 import { env } from './config/env.js';
 import authRoute from './routes/authRoute.js';
 import favoriteRoute from './routes/favoriteRoute.js';
+import propertyRoute from './routes/propertyRoute.js';
 import cookieParser from 'cookie-parser';
 import { connectDb } from './config/db.js';
 import cors from 'cors';
@@ -16,7 +17,8 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use('/api/auth', authRoute);
-app.use('/api/favorites', favoriteRoute)
+app.use('/api/favorites', favoriteRoute);
+app.use('/api/properties', propertyRoute)
 
 const port = env.PORT || 5100;
 
