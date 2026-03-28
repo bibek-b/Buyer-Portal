@@ -13,7 +13,11 @@ const MyFavorites = () => {
     <div className="space-y-4 py-4">
       <h3 className="text-2xl font-semibold">Your Favorites ❤️</h3>
 
-      <PropertyCard data={favoritePropertiesDetails} />
+      {favorites.length > 0 ? (
+        <PropertyCard data={favoritePropertiesDetails} />
+      ) : (
+        <span className="absolute top-1/2 left-1/2">No favourites yet ❤️</span>
+      )}
     </div>
   );
 };
