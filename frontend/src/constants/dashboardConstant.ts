@@ -1,7 +1,7 @@
 export const leftSidebarOptions = [
-    {id: 1, label: "Properities 🏘", accessor: "properties"},
-    {id: 2, label: "My Favorites 💜", accessor: "myFavorites"},
-    {id: 3, label: "Settings ⚙️", accessor: "settings"},
+    {id: 1, label: "Dashboard 📈", path: "/dashboard"},
+    {id: 2, label: "My Favorites 💜", path: "/myFavorites"},
+    {id: 3, label: "Settings ⚙️", path: "/settings"},
     
 ]
 

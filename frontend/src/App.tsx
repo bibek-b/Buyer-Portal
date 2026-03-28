@@ -7,7 +7,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-      <Route path='/' element={<Dashboard />} />
+      <Route path='/dashboard' element={<Dashboard />} />
       <Route path='/auth/:mode' element={<Auth />} />
       <Route path='/404' element={<PageNotFound />} />
       <Route path='*' element={<Navigate to={'/404'} replace />} />
