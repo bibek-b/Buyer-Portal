@@ -6,6 +6,6 @@ export interface FavoriteStoreType {
 }
 
 export interface FavoriteType {
-    id: string;
+    propertyId: string;
     userId: string;
 }
