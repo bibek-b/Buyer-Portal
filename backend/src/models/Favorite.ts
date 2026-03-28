@@ -2,12 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 
 const favoriteSchema = new Schema({
-    user:{
+    userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-     property:{
+     propertyId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Property',
         required: true
