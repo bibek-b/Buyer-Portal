@@ -1,4 +1,4 @@
-export interface fieldsType {
+export interface FieldsType {
   id: number;
   label: string;
   placeholder: string;
@@ -6,9 +6,11 @@ export interface fieldsType {
   inputType?: string;
 }
 
-export interface formDataType {
+export interface FormDataType {
   name?: string;
   email: string;
   password: string;
   confirmPassword?: string;
 }
+
+export type authModes = 'login' | 'register';

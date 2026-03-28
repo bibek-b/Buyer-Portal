@@ -1,11 +1,13 @@
 import { Link, Navigate, useParams } from "react-router";
 import authPageImg from "../assets/authPageImg.jpg";
 import { authFields } from "../constants/authConstant";
-import { useState } from "react";
-import type { fieldsType, formDataType } from "../types/authType";
+import React, { useState } from "react";
+import type { authModes, FieldsType, FormDataType } from "../types/authType";
+import { authFieldValidator } from "../validations/authFieldValidator";
+import { toast } from "react-toastify";
 
 const Auth = () => {
-  const [formData, setFormData] = useState<formDataType>({
+  const [formData, setFormData] = useState<FormDataType>({
     name: "",
     email: "",
     password: "",
@@ -20,22 +22,30 @@ const Auth = () => {
   }
 
   const isLogin = mode === "login";
-  const fields: fieldsType[] = authFields[mode as "login" | "register"] || [];
+  const fields: FieldsType[] = authFields[mode as "login" | "register"] || [];
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (e: React.FormEvent) => {
+    const validation = authFieldValidator(formData, mode as authModes);
 
+    if (!validation.valid) {
+      toast.error(validation.message);
+      e.preventDefault();
+    }
+  };
 
   return (
     <div className="bg-background  min-h-screen  flex items-center justify-center">
       <div className="w-[50%] flex items-center justify-center">
         <img
           src={authPageImg}
-          alt=""
           className="w-175 h-175 object-cover rounded-2xl"
         />
       </div>
 
-      <form className="w-[50%] flex flex-col items-center justify-center gap-10">
+      <form
+        onSubmit={handleSubmit}
+        className="w-[50%] flex flex-col items-center justify-center gap-10"
+      >
         <div className="text-center">
           <h2 className="text-3xl font-semibold">
             {isLogin ? "Welcome back" : "Create an account"}
@@ -53,7 +63,7 @@ const Auth = () => {
                   placeholder={field.placeholder}
                   required
                   minLength={6}
-                  value={formData[field.accessor as keyof formDataType]}
+                  value={formData[field.accessor as keyof FormDataType]}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -67,7 +77,7 @@ const Auth = () => {
                   className="border border-black/20 w-100 outline-0 py-2 px-4 rounded-full focus:border-black/50 transition-colors duration-300"
                   placeholder={field.placeholder}
                   required
-                  value={formData[field.accessor as keyof formDataType]}
+                  value={formData[field.accessor as keyof FormDataType]}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -82,7 +92,6 @@ const Auth = () => {
 
         <button
           type="submit"
-          onClick={handleSubmit}
           className="bg-blue-600 w-100 text-white p-2 rounded-full hover:bg-blue-700 cursor-pointer transition-colors duration-300"
         >
           {isLogin ? "Login" : "Register"}
