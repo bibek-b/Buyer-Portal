@@ -2,18 +2,21 @@ import { Link, Navigate, useParams } from "react-router";
 import authPageImg from "../assets/authPageImg.jpg";
 import { authFields } from "../constants/authConstant";
 import React, { useState } from "react";
-import type { authModes, FieldsType, FormDataType } from "../types/authType";
+import type { AuthFieldsAttributeType, AuthFormDataType, authModes,  } from "../types/authType";
 import { authFieldValidator } from "../validations/authFieldValidator";
 import { toast } from "react-toastify";
+import { authApi } from "../api/authApi";
+import { navigate } from "../utils/navigate";
 
 const Auth = () => {
-  const [formData, setFormData] = useState<FormDataType>({
+  const [formData, setFormData] = useState<AuthFormDataType>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const { mode } = useParams();
+  const { nav } = navigate();
 
   const validModes = ["login", "register"];
 
@@ -22,15 +25,30 @@ const Auth = () => {
   }
 
   const isLogin = mode === "login";
-  const fields: FieldsType[] = authFields[mode as "login" | "register"] || [];
+  const fields: AuthFieldsAttributeType[] = authFields[mode as authModes] || [];
 
   const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+
     const validation = authFieldValidator(formData, mode as authModes);
 
     if (!validation.valid) {
       toast.error(validation.message);
-      e.preventDefault();
+      return;
     }
+
+    let res;
+   try {
+     if(isLogin){
+       res = await authApi.login(formData);
+     } else if(mode === "register"){
+       res = await authApi.register(formData);
+     }
+     toast.success(res?.data.message);
+     nav('/')
+   } catch (error) {
+    toast.error(error.response.message)
+   }
   };
 
   return (
@@ -63,7 +81,7 @@ const Auth = () => {
                   placeholder={field.placeholder}
                   required
                   minLength={6}
-                  value={formData[field.accessor as keyof FormDataType]}
+                  value={formData[field.accessor as keyof AuthFormDataType]}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -77,7 +95,7 @@ const Auth = () => {
                   className="border border-black/20 w-100 outline-0 py-2 px-4 rounded-full focus:border-black/50 transition-colors duration-300"
                   placeholder={field.placeholder}
                   required
-                  value={formData[field.accessor as keyof FormDataType]}
+                  value={formData[field.accessor as keyof AuthFormDataType]}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
