@@ -4,3 +4,8 @@ export interface PropertyType {
     price: number;
     location: string
 }
+
+export interface PropertyStoreType {
+    properties: PropertyType[];
+    setProperties: (data: PropertyType[]) => void;
+}
