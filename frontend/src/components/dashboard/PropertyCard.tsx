@@ -19,6 +19,7 @@ const PropertyCard = () => {
 
   return (
     <div className="flex flex-wrap gap-6">
+     
       {properties.map((p) => (
         <div
           key={p.id}
