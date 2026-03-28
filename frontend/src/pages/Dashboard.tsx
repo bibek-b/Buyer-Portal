@@ -1,8 +1,10 @@
-import React from 'react'
+import LeftSidebar from "../components/LeftSidebar"
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div className="min-h-full">
+      <LeftSidebar />
+    </div>
   )
 }
 
