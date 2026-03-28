@@ -7,6 +7,7 @@ import { authFieldValidator } from "../validations/authFieldValidator";
 import { toast } from "react-toastify";
 import { authApi } from "../api/authApi";
 import { navigate } from "../utils/navigate";
+import { useUserStore } from "../stores/userStore";
 
 const Auth = () => {
   const [formData, setFormData] = useState<AuthFormDataType>({
@@ -17,6 +18,7 @@ const Auth = () => {
   });
   const { mode } = useParams();
   const { nav } = navigate();
+  const { setUser } = useUserStore();
 
   const validModes = ["login", "register"];
 
@@ -44,6 +46,7 @@ const Auth = () => {
      } else if(mode === "register"){
        res = await authApi.register(formData);
      }
+     setUser(res?.data.data);
      toast.success(res?.data.message);
      nav('/')
    } catch (error) {
