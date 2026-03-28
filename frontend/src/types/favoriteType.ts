@@ -1,11 +1,11 @@
 export interface FavoriteStoreType {
-    favorites: favoriteType[];
-    setFavorites: (data: favoriteType[]) => void;
-    addToFavorite: (dara: favoriteType) => void;
+    favorites: FavoriteType[];
+    setFavorites: (data: FavoriteType[]) => void;
+    addToFavorite: (dara: FavoriteType) => void;
     removeFromFavorite: (id: string) => void;
 }
 
-export interface favoriteType {
+export interface FavoriteType {
     id: string;
     userId: string;
 }

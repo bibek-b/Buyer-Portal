@@ -2,18 +2,28 @@ import img from "../../assets/authPageImg.jpg";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { useFavoriteStore } from "../../stores/favoritesStore";
-import type { favoriteType } from "../../types/favoriteType";
+import type { FavoriteType } from "../../types/favoriteType";
 import type { PropertyType } from "../../types/propertyType";
+import { useUserStore } from "../../stores/userStore";
+import { toast } from "react-toastify";
+import { favoriteApi } from "../../api/favoriteApi";
 
 const PropertyCard = ({ data }: { data: PropertyType[] }) => {
   const { addToFavorite, favorites, removeFromFavorite } = useFavoriteStore();
+  const { user } = useUserStore();
 
-  const handleSelectFavorite = (id: string) => {
-    if (favorites.some((fav: favoriteType) => fav.id == id)) {
-      removeFromFavorite(id);
-    } else {
-      addToFavorite({ id, userId: "324" });
-    }
+  const handleSelectFavorite = async (id: string) => {
+    let res;
+   try {
+     if (favorites.some((fav: FavoriteType) => fav.id == id)) {
+       removeFromFavorite(id);
+      //  res = await favoriteApi.removeFromFavorites()
+     } else {
+       addToFavorite({ id, userId: user._id });
+     }
+   } catch (error) {
+    toast.error(error.message);
+   }
   };
 
   return (
@@ -27,7 +37,7 @@ const PropertyCard = ({ data }: { data: PropertyType[] }) => {
             <div className="relative w-full">
               <img src={img} className="w-full h-40 object-cover rounded-2xl" />
               <div onClick={() => handleSelectFavorite(p.id)}>
-                {favorites.some((fav: favoriteType) => fav.id == p.id) ? (
+                {favorites.some((fav: FavoriteType) => fav.id == p.id) ? (
                   <FaHeart
                     size={22}
                     className="absolute top-2  right-4 text-blue-500 cursor-pointer hover:scale-[1.2] transition-discrete duration-300 ease-in-out"
@@ -42,7 +52,9 @@ const PropertyCard = ({ data }: { data: PropertyType[] }) => {
             </div>
 
             <div className="space-y-2 text-black/80 flex flex-col  justify-center h-full">
-              <span className="text-xl font-semibold line-clamp-2">Rs.{p.price}</span>
+              <span className="text-xl font-semibold line-clamp-2">
+                Rs.{p.price}
+              </span>
               <h3 className="font-medium text-2xl">{p.title}</h3>
 
               <span className="italic">{p.location}</span>

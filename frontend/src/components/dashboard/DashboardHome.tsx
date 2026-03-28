@@ -5,6 +5,7 @@ import PropertyCard from "./PropertyCard";
 const DashboardHome = () => {
    const { properties } = usePropertyStore();
 
+
    const { user } = useUserStore();
 
   return (
