@@ -1,6 +1,10 @@
+import type { PropertyType } from "../../types/propertyType";
+import { storage } from "../../utils/storage";
 import PropertyCard from "./PropertyCard";
 
 const DashboardHome = () => {
+    const properties: PropertyType[] = storage.get<PropertyType[]>("properties")!;
+    console.log(storage.get<PropertyType[]>("properties"))
   return (
     <div className="py-4 space-y-20">
       <h2 className="text-4xl font-bold">Welcome, Bibek (Buyer)</h2>
@@ -9,7 +13,7 @@ const DashboardHome = () => {
         List of available properties 🏘
       </span>
 
-      <PropertyCard />
+      <PropertyCard data={properties} />
     </div>
   );
 };

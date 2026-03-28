@@ -1,14 +1,13 @@
-import { useEffect } from "react";
 import img from "../../assets/authPageImg.jpg";
-import { properties } from "../../constants/dashboardConstant";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { useFavoriteStore } from "../../stores/favoritesStore";
 import type { favoriteType } from "../../types/favoriteType";
+import type { PropertyType } from "../../types/propertyType";
 
-const PropertyCard = () => {
+const PropertyCard = ( { data }: { data: PropertyType[] } ) => {
   const { addToFavorite, favorites, removeFromFavorite } = useFavoriteStore();
-
+  
   const handleSelectFavorite = (id: string) => {
     if (favorites.some((fav: favoriteType) => fav.id == id)) {
       removeFromFavorite(id);
@@ -19,8 +18,7 @@ const PropertyCard = () => {
 
   return (
     <div className="flex flex-wrap gap-6">
-     
-      {properties.map((p) => (
+      {data?.map((p) => (
         <div
           key={p.id}
           className="w-72 min-h-80 shadow-lg flex flex-col  p-2 rounded-2xl gap-4 hover:scale-[1.05] transition-discrete duration-300"

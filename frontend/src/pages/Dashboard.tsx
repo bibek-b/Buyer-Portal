@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import LeftSidebar from "../components/dashboard/LeftSidebar";
-import PropertyCard from "../components/dashboard/PropertyCard";
 import { properties } from "../constants/dashboardConstant";
 import { Outlet } from "react-router";
+import { storage } from "../utils/storage";
 
 const Dashboard = () => {
   useEffect(() => {
-    localStorage.setItem("properties", JSON.stringify(properties));
+    storage.set("properties", properties);
   }, []);
 
   return (
