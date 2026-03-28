@@ -1,8 +1,8 @@
-import { leftSidebarOptions } from "../constants/dashboardConstant"
+import { leftSidebarOptions } from "../../constants/dashboardConstant"
 
 const LeftSidebar = () => {
   return (
-    <div className='bg-blue-500 w-[12%] h-screen space-y-20 text-white  py-8 '>
+    <div className='bg-blue-500 w-[14%]  h-screen space-y-20 text-white  py-8 fixed'>
        <div className="px-2 h-full flex flex-col items-center justify-between">
          <h3 className="text-2xl font-bold">AppName 🏢</h3>
 

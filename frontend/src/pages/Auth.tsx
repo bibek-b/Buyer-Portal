@@ -24,7 +24,6 @@ const Auth = () => {
 
   const handleSubmit = () => {};
 
-  console.log({ formData });
 
   return (
     <div className="bg-background  min-h-screen  flex items-center justify-center">
