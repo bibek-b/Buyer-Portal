@@ -2,12 +2,17 @@ import { Link, Navigate, useParams } from "react-router";
 import authPageImg from "../assets/authPageImg.jpg";
 import { authFields } from "../constants/authConstant";
 import React, { useState } from "react";
-import type { AuthFieldsAttributeType, AuthFormDataType, authModes,  } from "../types/authType";
+import type {
+  AuthFieldsAttributeType,
+  AuthFormDataType,
+  authModes,
+} from "../types/authType";
 import { authFieldValidator } from "../validations/authFieldValidator";
 import { toast } from "react-toastify";
 import { authApi } from "../api/authApi";
 import { navigate } from "../utils/navigate";
 import { useUserStore } from "../stores/userStore";
+import type { AxiosError } from "axios";
 
 const Auth = () => {
   const [formData, setFormData] = useState<AuthFormDataType>({
@@ -30,7 +35,7 @@ const Auth = () => {
   const fields: AuthFieldsAttributeType[] = authFields[mode as authModes] || [];
 
   const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
+    e.preventDefault();
 
     const validation = authFieldValidator(formData, mode as authModes);
 
@@ -40,18 +45,19 @@ const Auth = () => {
     }
 
     let res;
-   try {
-     if(isLogin){
-       res = await authApi.login(formData);
-     } else if(mode === "register"){
-       res = await authApi.register(formData);
-     }
-     setUser(res?.data.data);
-     toast.success(res?.data.message);
-     nav('/')
-   } catch (error) {
-    toast.error(error.response.message)
-   }
+    try {
+      if (isLogin) {
+        res = await authApi.login(formData);
+      } else if (mode === "register") {
+        res = await authApi.register(formData);
+      }
+      setUser(res?.data.data);
+      toast.success(res?.data.message);
+      nav("/");
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      toast.error(err.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (

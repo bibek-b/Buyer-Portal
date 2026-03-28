@@ -1,10 +1,8 @@
-import type {  Response } from "express";
+import type { Response } from "express";
 import Favorite from "../models/Favorite.js";
 import Property from "../models/Property.js";
 import User from "../models/User.js";
 import type { AuthRequest } from "../types/axios.js";
-
-
 
 export const getAllFavorites = async (req: AuthRequest, res: Response) => {
   try {
@@ -66,7 +64,12 @@ export const addFavorite = async (req: AuthRequest, res: Response) => {
     }
 
     await Favorite.create({ propertyId, userId });
-    return res.status(201).json({success:false, message: "Property successfully added to favorites!"});
+    return res
+      .status(201)
+      .json({
+        success: false,
+        message: "Property successfully added to favorites!",
+      });
   } catch (error) {
     return res
       .status(500)
@@ -86,6 +89,12 @@ export const deleteFavorite = async (req: AuthRequest, res: Response) => {
         .json({ success: false, message: "Property doesnot exists!" });
     }
     await Favorite.deleteOne({ userId, propertyId });
+    return res
+      .status(200)
+      .json({
+        success: false,
+        message: "Property successfully removed from favorites",
+      });
   } catch (error) {
     return res
       .status(500)
