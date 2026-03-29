@@ -8,6 +8,6 @@ export interface UserType {
 }
 
 export interface UserStoreType {
-  user: UserType;
-  setUser: (data: UserType) => void;
+  user: UserType | null;
+  setUser: (data: UserType | null) => void;
 }

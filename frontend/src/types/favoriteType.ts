@@ -1,6 +1,6 @@
 export interface FavoriteStoreType {
-    favorites: FavoriteType[];
-    setFavorites: (data: FavoriteType[]) => void;
+    favorites: FavoriteType[] | null;
+    setFavorites: (data: FavoriteType[] | null) => void;
     addToFavorite: (dara: FavoriteType) => void;
     removeFromFavorite: (id: string) => void;
 }

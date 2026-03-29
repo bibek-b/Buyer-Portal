@@ -6,19 +6,23 @@ const STORAGE_KEY = "favorites";
 
 export const useFavoriteStore = create<FavoriteStoreType>((set) => ({
   favorites: storage.get<FavoriteType[]>(STORAGE_KEY) || [],
-  setFavorites: (data: FavoriteType[]) => {
-    storage.set(STORAGE_KEY, data);
+  setFavorites: (data: FavoriteType[] | null) => {
+    if (data) {
+      storage.set(STORAGE_KEY, data);
+    } else {
+      storage.remove(STORAGE_KEY);
+    }
     set({ favorites: data });
   },
   addToFavorite: (data: FavoriteType) =>
     set((state) => {
-      const updated = [...state.favorites, data];
+      const updated = [...state.favorites!, data];
       storage.set(STORAGE_KEY, updated);
       return { favorites: updated };
     }),
   removeFromFavorite: (id: string) =>
     set((state) => {
-      const updated = state.favorites.filter((s) => s.propertyId !== id);
+      const updated = state.favorites!.filter((s) => s.propertyId !== id);
       storage.set(STORAGE_KEY, updated);
       return { favorites: updated };
     }),
