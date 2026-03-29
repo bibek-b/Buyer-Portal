@@ -16,4 +16,11 @@ export const storage = {
       console.error("Error writing to localStorage", error);
     }
   },
+   remove: (key: string) => {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error("Error removing from localStorage", error);
+    }
+  },
 };
