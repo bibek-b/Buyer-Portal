@@ -6,10 +6,17 @@ import { toast } from "react-toastify";
 import { propertyApi } from "../../api/propertyApi";
 import type { AxiosError } from "axios";
 import { useLoaderStore } from "../../stores/loaderStore";
+import { favoriteApi } from "../../api/favoriteApi";
+import { useFavoriteStore } from "../../stores/favoritesStore";
 
 const DashboardHome = () => {
   const { properties, setProperties } = usePropertyStore();
   const { showLoading, hideLoading } = useLoaderStore();
+  const { setFavorites } = useFavoriteStore();
+
+  const { user } = useUserStore();
+
+  if(!user) return;
 
   useEffect(() => {
     const fetchAllProperties = async () => {
@@ -25,9 +32,22 @@ const DashboardHome = () => {
       }
     };
     fetchAllProperties();
+
+    const getMyFavorites = async () => {
+      try {
+        showLoading();
+        const res = await favoriteApi.getMyFavorites();
+        setFavorites(res.data.data);
+      } catch (error) {
+        const err = error as AxiosError<{ message: string }>;
+        toast.error(err.response?.data?.message || "Something went wrong");
+      } finally {
+        hideLoading();
+      }
+    };
+    getMyFavorites();
   }, []);
 
-  const { user } = useUserStore();
 
   return (
     <div className="py-4 space-y-30">
