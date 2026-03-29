@@ -4,4 +4,5 @@ import api from "./axios";
 export const authApi = { 
 register: (data: AuthFormDataType) => api.post('/auth/register', data),
 login: (data: AuthFormDataType) => api.post('/auth/login', data),
+logout: () => api.post('/auth/logout');
 }
