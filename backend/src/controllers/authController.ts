@@ -91,3 +91,20 @@ export const login = async (req: Request, res: Response) => {
       .json({ success: false, message: "Server error, Please try again." });
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax"
+    });
+
+     return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+  } catch (error) {
+    return res.status(500).json({success: false, message: "Server error, Please try again."})
+  }
+}
