@@ -13,18 +13,17 @@ import { useLoaderStore } from "../../stores/loaderStore";
 const PropertyCard = ({ data }: { data: PropertyType[] }) => {
   const { addToFavorite, favorites, removeFromFavorite } = useFavoriteStore();
   const { user } = useUserStore();
-    const { showLoading, hideLoading } = useLoaderStore();
-  
+  const { showLoading, hideLoading } = useLoaderStore();
 
   const handleSelectFavorite = async (id: string) => {
     let res;
     try {
       showLoading();
-      if (favorites.some((fav: FavoriteType) => fav.propertyId === id)) {
+      if (favorites?.some((fav: FavoriteType) => fav.propertyId === id)) {
         removeFromFavorite(id);
         res = await favoriteApi.removeFromFavorites(id);
       } else {
-        addToFavorite({ propertyId: id, userId: user._id });
+        addToFavorite({ propertyId: id, userId: user?._id! });
         res = await favoriteApi.addToFavorites(id);
       }
       toast.success(res.data.message);
@@ -47,7 +46,7 @@ const PropertyCard = ({ data }: { data: PropertyType[] }) => {
             <div className="relative w-full">
               <img src={img} className="w-full h-40 object-cover rounded-2xl" />
               <div onClick={() => handleSelectFavorite(p._id)}>
-                {favorites.some(
+                {favorites?.some(
                   (fav: FavoriteType) => fav.propertyId == p._id,
                 ) ? (
                   <FaHeart
