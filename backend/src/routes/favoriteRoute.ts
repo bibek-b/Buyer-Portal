@@ -4,9 +4,9 @@ import { addFavorite, deleteFavorite, getAllFavorites, getUserFavorites } from '
 
 const router = express.Router();
 
-router.get('/', verifyToken, getAllFavorites);
-router.get('/my', verifyToken, getUserFavorites);
-router.post('/:propertyId', verifyToken, addFavorite);
-router.delete('/:propertyId', verifyToken, deleteFavorite);
+router.get('/', verifyToken, getAllFavorites as any);
+router.get('/my', verifyToken, getUserFavorites as any);
+router.post('/:propertyId', verifyToken, addFavorite as any);
+router.delete('/:propertyId', verifyToken, deleteFavorite as any);
 
 export default router;
