@@ -6,8 +6,6 @@ const MyFavorites = () => {
   const { favorites } = useFavoriteStore();
   const { properties } = usePropertyStore();
 
-
-
   const favoritePropertiesDetails = properties.filter((p) =>
     favorites?.some((f) => f.propertyId === p._id),
   );

@@ -20,7 +20,7 @@ export const useAuth = () => {
       setUser(null);
       setFavorites(null);
       toast.success(res.data.message);
-      navigate("/auth/login");
+      navigate("/auth/login", { replace: true });
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data?.message || "Something went wrong");
