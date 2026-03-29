@@ -9,11 +9,7 @@ import type {
 } from "../types/authType";
 import { authFieldValidator } from "../validations/authFieldValidator";
 import { toast } from "react-toastify";
-import { authApi } from "../api/authApi";
-import { navigator } from "../utils/navigate";
-import { useUserStore } from "../stores/userStore";
-import type { AxiosError } from "axios";
-import { useLoaderStore } from "../stores/loaderStore";
+import { useAuth } from "../hooks/useAuth";
 
 const Auth = () => {
   const [formData, setFormData] = useState<AuthFormDataType>({
@@ -23,9 +19,7 @@ const Auth = () => {
     confirmPassword: "",
   });
   const { mode } = useParams();
-  const { navigate } = navigator();
-  const { setUser } = useUserStore();
-  const { showLoading, hideLoading }= useLoaderStore();
+  const { login, register } = useAuth();
 
   const validModes = ["login", "register"];
 
@@ -46,22 +40,10 @@ const Auth = () => {
       return;
     }
 
-    let res;
-    try {
-      showLoading();
-      if (isLogin) {
-        res = await authApi.login(formData);
-      } else if (mode === "register") {
-        res = await authApi.register(formData);
-      }
-      setUser(res?.data.data);
-      toast.success(res?.data.message);
-      navigate("/");
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      toast.error(err.response?.data?.message || "Something went wrong");
-    } finally {
-      hideLoading();
+    if (isLogin) {
+      login(formData);
+    } else {
+      register(formData);
     }
   };
 

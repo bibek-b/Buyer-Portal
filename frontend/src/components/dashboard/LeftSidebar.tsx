@@ -20,7 +20,7 @@ const LeftSidebar = () => {
               >
                 {opt.label}
               </Link>
-            ))}``
+            ))}
           </ul>
         </div>
 
