@@ -4,7 +4,7 @@ import { storage } from "../utils/storage";
 
 const STORAGE_KEY = "user";
 export const useUserStore = create<UserStoreType>((set) => ({
-  user: storage.get(STORAGE_KEY) || { _id: "", name: "", email: "", role: "" },
+  user: storage.get(STORAGE_KEY) || null,
   setUser: (data: UserType | null) => {
     if (data) {
       storage.set(STORAGE_KEY, data);

@@ -1,10 +1,13 @@
 import PropertyCard from "../components/dashboard/PropertyCard";
 import { useFavoriteStore } from "../stores/favoritesStore";
 import { usePropertyStore } from "../stores/propertyStore";
+import { useUserStore } from "../stores/userStore";
 
 const MyFavorites = () => {
   const { favorites } = useFavoriteStore();
   const { properties } = usePropertyStore();
+  const { user } = useUserStore();
+
 
   const favoritePropertiesDetails = properties.filter((p) =>
     favorites?.some((f) => f.propertyId === p._id),
